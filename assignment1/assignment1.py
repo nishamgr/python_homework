@@ -1,34 +1,40 @@
 # # Task1 : Hello
-print('Task 1 : Hello!')
+def hello():
+    return ("Hello!")
 
 # # Task2 : Greet with a Formatted String
 name = "Neesha"
-def greetFunc(name: str) -> str:
+def greet(name: str) -> str:
     return f"Hello, {name}!"
-print(greetFunc(name))
+print(greet(name))
 
 # Task3 : Calculator
 
-# def myCalc(a, b, operation="multiply"):
-#     match operation:
-#         case "add":
-#             return a + b
-#         case "subtract":
-#             return a - b 
-#         case "multiply":
-#             return a * b
-#         case "divide":
-#             return a / b
-#         case "modulo":
-#             return a % b
-#         case "int_divide":
-#             return a // b
-#         case "power":
-#             return a ** b
-#         case _: 
-#             return "Wrong"
+def calc(a, b, operation="multiply"):
+    try:
+        match operation:
+            case "add":
+                return a + b             
+            case "subtract":
+                 return a - b 
+            case "multiply":
+                return a * b             
+            case "divide":
+                return a / b
+            case "modulo":
+                return a % b
+            case "int_divide":
+                return a // b
+            case "power":
+                return a ** b             
+            case _: 
+                return "Wrong"
+    except ZeroDivisionError:
+        return "You can't divide by 0!"
+    except TypeError:
+        return f"You can't multiply those values!"
     
-# print(myCalc(3, 5, "add"))
+print(calc(3, 5, "add"))
 
 # Task4: DataTypeConversion
 
@@ -50,21 +56,28 @@ print(data_type_conversion("Leo", "float"))
 
 # Task5: Grading System, Using *args
 
-def checkGrades(*args):
-    score = args[0]
-    if score >= 90:
-        print("A")
-    elif score >= 80:
-        print ("B")
-    elif score >= 70:
-        print("C")
-    elif score >= 60:
-        print("D")
-    else:
-        print ("C")
+def grade(*args):
+    try:
+        if len(args) == 0:
+            return "Invalid data was provided."
+        
+        average = sum(args)/ len(args)
 
-checkGrades(90)
-
+        if average >= 90:
+            return "A"
+        elif average>= 80:
+            return "B"
+        elif average >= 70:
+            return "C"
+        elif average >= 60:
+            return "D"
+        else:
+            return "F"
+    except (TypeError, ValueError):
+        return "Invalid data was provided."
+    
+grade("three", "blind", "mice")
+    
 # Task 6: Use a For Loop with a Range
 
 def repeat(string, count):
@@ -80,13 +93,10 @@ print(repeat("Hello ", 5).strip())
 
 def student_scores(option, **kwargs):
         if option == "best":
-                best_student = max(kwargs, key=kwargs.get)
-                return f"Best Student: {best_student}"
+                return max(kwargs, key=kwargs.get)
         elif option == "mean":
-                mean_score = sum(kwargs.values()) / len(kwargs)
-                return f"Mean Score: {mean_score}"
-        else: 
-             return "Chose 'best' or 'mean' ."
+                return sum(kwargs.values()) / len(kwargs)
+              
 
 print(student_scores("best", Maya=80, John=90, Julie=85))
 print(student_scores("mean", Summer=10, Liya=30, Ruth=5))
@@ -96,13 +106,14 @@ print(student_scores("mean", Summer=10, Liya=30, Ruth=5))
 #sentence = "i like coffee And tea A lot."
 #words = "i, like, coffee, and, tea, a, lot."
 def titleize(sentence):
-    split_words = sentence.split()
     little_words = ["a", "on", "an", "the", "of", "and", "is", "in"]
+    words = sentence.split()
     new_word = []
-    for i, word in enumerate(split_words):
+    
+    for i, word in enumerate(words):
         if i == 0:
             word = word.capitalize()
-        elif i == len(split_words) - 1:
+        elif i == len(words) - 1:
             word = word.capitalize()
         else:
             if word.lower() in little_words:
@@ -110,10 +121,12 @@ def titleize(sentence):
             else: 
                 word = word.capitalize()
         new_word.append(word)
-    return "Task 8 :" + " ".join(new_word)
+    return " ".join(new_word)
         
 
-print(titleize ("i like coffee And tea A lot."))
+titleize("war and peace")
+titleize("a separate peace")
+titleize("after on")
 
 # Task 9: Hangman, with more String Operations
 def hangman(secretWord, guessLetters):
@@ -148,24 +161,25 @@ def pig_latin(sentence):
         if word[0] in vowels:
             pig_word = word + "ay"
         else:
-            # check for special case rule 3
-            if word[:2] == "qu":
-                pig_word = word[2:] + "quay"
-            else:
-                # Rule 2: move leading consonants to the end
-                consonant_cluster = ""
-                for letter in word:
-                    if letter in vowels:
-                        break
-                    else:
-                        consonant_cluster += letter
-                pig_word = word[len(consonant_cluster):] + consonant_cluster + "ay"
+            #rule2 & 3
+            consonant_cluster = ""
+            i = 0
+            while i < len(word):
+            # check for special "qu" case
+                if word[i:i+2] == "qu":
+                    i += 2
+                    break
+                elif word[i] in vowels:
+                    break
+                else:
+                    i += 1
+            pig_word = word[i:] + word[:i] + "ay"
         
         result.append(pig_word)
     
     return " ".join(result)
 
-print(pig_latin("angel world quack"))
+print(pig_latin("square"))
 
 
 
