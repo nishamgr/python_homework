@@ -1,0 +1,110 @@
+                                ### Task 1: Introduction to Pandas - Creating and Manipulating DataFrames ###
+
+#1 : Create a DataFrame from a dictionary:
+
+import pandas as pd
+import numpy as np
+import os
+from io import StringIO
+
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie'],
+    'Age': [25, 30, 35],
+    'City': ['New York', 'Los Angeles', 'Chicago']
+}
+
+task1_data_frame = pd.DataFrame(data)
+print(task1_data_frame)
+
+#2 : adding a new col
+task1_with_salary = task1_data_frame.copy()
+task1_with_salary['Salary']  = [70000, 80000, 90000]
+
+print(task1_with_salary)
+
+#3 : Modify an existing column:
+
+task1_older = task1_with_salary.copy()
+task1_older['Age'] += 1
+
+print(task1_older)
+
+#4 : Save the DataFrame as a CSV file:
+task1_older.to_csv("employees.csv", index=False)
+
+                            ###Task 2: Loading Data from CSV and JSON
+#1 : Read data from a CSV file:
+
+task2_employees = pd.read_csv("employees.csv")
+print(task2_employees)
+
+#2 : Read data from a JSON file:
+
+json_employees = pd.read_json("additional_employees.json")
+print(json_employees)
+
+#3  : Combine DataFrames
+
+more_employees = pd.concat([task2_employees, json_employees], ignore_index=True)
+
+                         ### Task 3: Data Inspection - Using Head, Tail, and Info Methods
+#1 : Use the head() method:
+first_three = more_employees.head(3)
+print(first_three)
+
+#2 : Use the tail() method:
+last_two = more_employees.tail(2)
+print(last_two)
+
+#3 : Get the shape of a DataFrame
+employee_shape = more_employees.shape
+print(employee_shape)
+
+#4 : Use the info() method:
+more_employees.info()
+
+                        ### Task 4 : Data Cleaning
+
+#1 created a DataFrame and assigned to a variable
+dirty_data = pd.read_csv("dirty_data.csv")
+print(dirty_data)
+
+# copy of dirty data
+clean_data = dirty_data.copy()
+
+#2 remove duplicates
+clean_data.drop_duplicates(inplace=True)
+print(clean_data)
+
+#3 converstion of Age to Num and handle missing values
+clean_data['Age'] = pd.to_numeric(clean_data['Age'], errors='coerce')
+clean_data['Age'].fillna(clean_data['Age'].mean(), inplace=True)
+print(clean_data['Age'])
+
+#4 replaceing place holder
+clean_data['Salary'].replace(['unknown', 'n/a'], np.nan, inplace=True)
+
+#4.1 converting to numreic and 
+clean_data['Salary'] = pd.to_numeric(clean_data['Salary'], errors='coerce')
+print(clean_data['Salary'])
+
+
+#5 Fill missing numeric values (use fillna).  
+# Fill Age which the mean and Salary with the median
+clean_data['Salary'].fillna(clean_data['Salary'].median(), inplace=True)
+print(clean_data[['Age', 'Salary']])
+
+# 6Convert Hire Date to datetime
+clean_data['Hire Date'] = pd.to_datetime(clean_data['Hire Date'], errors='coerce')
+print('\nConverted to Datetime: ')
+print(clean_data)
+
+#7 Strip extra whitespace and standardize Name and Department as uppercase
+clean_data['Name'] = clean_data['Name'].str.strip()
+clean_data['Department'] = clean_data['Department'].str.strip()
+
+# converted to uppercase
+clean_data['Name'] = clean_data['Name'].str.upper()
+clean_data['Department'] = clean_data['Department'].str.upper()
+print(clean_data[['Name', 'Department']])
+
