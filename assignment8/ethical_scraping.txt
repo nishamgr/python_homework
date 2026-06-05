@@ -1,0 +1,9 @@
+1. Restricted Sections:
+They restrict certain paths such as /api/, /w/. /wiki/special
+
+2.User agent rules:
+Most of the rules are under "User-agent: /
+
+3.Reflection:
+The robos.txt file basicallt tells web crawlers about the ristrictions like allowed/ disallowed for automated access.
+This is important because it helps ptotect sensitive or other non-public from being scraped
